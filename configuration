@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "Enter your access token from https://www.pushbullet.com/account:"
+read APIKEY
+sed -i.bak "s/!APIKEY!/$APIKEY/g" pushTorrent.js
