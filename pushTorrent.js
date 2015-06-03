@@ -2,6 +2,8 @@
 
 var WebSocket = require('ws');
 var request = require('request');
+var fs = require('fs');
+var zlib = require('zlib');
 var apikey = process.env.TOKEN;
 console.log("using token: " + apikey);
 var url = 'https://api.pushbullet.com/v2/pushes?modified_after=';
@@ -17,10 +19,28 @@ function requestCallback(error, response, body) {
 	chunk.pushes.forEach(function (element, index, array) {
 		// link is for a torrent file
 		if (element.type == 'link' && torrentRegex.test(element.url)) {
-			
+			var nameRegex = /[^\/]+\.torrent/
+			var name = nameRegex.exec(element.url);
+			console.log("Download: " + element.url);
+			var torrentOptions = {
+				url: element.url,
+				encoding: null
+			};
+			// downloads and decompresses if needed
+			function torrentDownloadCallback(error, response, body) {
+				if (response.headers['content-encoding'] == 'gzip') {
+					zlib.gunzip(body, function (error, uncompressed) {
+						fs.writeFile(name, uncompressed);
+					});
+				} else {
+					fs.writeFile(name, body);
+				}
+			}
+			request(torrentOptions, torrentDownloadCallback);
 		}
 	});
 }
+
 
 // updates timeStamp with most recent from server
 function setTimeStamp(error, response, body) {
