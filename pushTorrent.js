@@ -4,14 +4,15 @@ var WebSocket = require('ws');
 var request = require('request');
 var fs = require('fs');
 var zlib = require('zlib');
+var config = require('config');
 var tough = require('tough-cookie');
 var FileCookieStore = require('tough-cookie-filestore');
 var j = request.jar(new FileCookieStore('cookies.json'));
 request = request.defaults({ jar : j });
 
 // set by user in ./configure
-var apikey = !APIKEY!;
-var saveDirectory = '!DIRECTORY!';
+var apikey = null;
+var saveDirectory = './';
 
 console.log("using token: " + apikey);
 var url = 'https://api.pushbullet.com/v2/pushes?modified_after=';
@@ -69,6 +70,10 @@ var requestOptions = {
 function updateUrl() {
 	requestOptions.url = url + timeStamp;
 }
+
+fs.readFile('./pushTorrent.config', 'utf-8', function (error, data) {
+	console.log(data);
+});
 
 //sets first timestamp
 request(requestOptions, setTimeStamp);

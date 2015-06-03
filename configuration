@@ -1,4 +1,11 @@
 #!/bin/bash
+
+type nodejs >/dev/null 2>&1 || { echo >&2 "Nodejs is required to run.  Aborting."; exit 1; }
+
 echo "Enter your access token from https://www.pushbullet.com/account:"
 read APIKEY
-sed -i.bak "s/!APIKEY!/$APIKEY/g" pushTorrent.js
+
+echo "Enter the path to save *.torrent files (./ is okay):"
+read DIRECTORY
+
+printf "{\n\t\"Authorization Token\": \"$APIKEY\",\n\t\"Directory\": \"$DIRECTORY\"\n}\n" > config/default.json
