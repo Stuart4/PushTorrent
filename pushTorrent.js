@@ -4,6 +4,10 @@ var WebSocket = require('ws');
 var request = require('request');
 var fs = require('fs');
 var zlib = require('zlib');
+var tough = require('tough-cookie');
+var FileCookieStore = require('tough-cookie-filestore');
+var j = request.jar(new FileCookieStore('cookies.json'));
+request = request.defaults({ jar : j });
 var apikey = process.env.TOKEN;
 console.log("using token: " + apikey);
 var url = 'https://api.pushbullet.com/v2/pushes?modified_after=';
@@ -20,7 +24,7 @@ function requestCallback(error, response, body) {
 		// link is for a torrent file
 		if (element.type == 'link' && torrentRegex.test(element.url)) {
 			var nameRegex = /[^\/]+\.torrent/
-			var name = nameRegex.exec(element.url);
+			var name = nameRegex.exec(element.url)[0];
 			console.log("Download: " + element.url);
 			var torrentOptions = {
 				url: element.url,
