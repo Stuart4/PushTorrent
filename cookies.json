@@ -1,0 +1,28 @@
+{
+	"iptorrents.com": {
+		"/": {
+			"uid": {
+				"key": "uid",
+				"value": "555",
+				"expires": "2036-06-02T04:03:15.000Z",
+				"domain": "iptorrents.com",
+				"path": "/",
+				"httpOnly": false,
+				"hostOnly": false,
+				"creation": "2015-06-03T04:03:17.282Z",
+				"lastAccessed": "2015-06-03T04:03:17.282Z"
+			},
+			"pass": {
+				"key": "pass",
+				"value": "2a10e4478314c9e586fe9b40d2769f58",
+				"expires": "2036-06-02T04:03:15.000Z",
+				"domain": "iptorrents.com",
+				"path": "/",
+				"httpOnly": false,
+				"hostOnly": false,
+				"creation": "2015-06-03T04:03:17.282Z",
+				"lastAccessed": "2015-06-03T04:03:17.282Z"
+			}
+		}
+	}
+}
