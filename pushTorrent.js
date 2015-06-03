@@ -9,6 +9,7 @@ var FileCookieStore = require('tough-cookie-filestore');
 var j = request.jar(new FileCookieStore('cookies.json'));
 request = request.defaults({ jar : j });
 var apikey = process.env.TOKEN;
+var saveDirectory = './';
 console.log("using token: " + apikey);
 var url = 'https://api.pushbullet.com/v2/pushes?modified_after=';
 var timeStamp = 0;
@@ -34,10 +35,10 @@ function requestCallback(error, response, body) {
 			function torrentDownloadCallback(error, response, body) {
 				if (response.headers['content-encoding'] == 'gzip') {
 					zlib.gunzip(body, function (error, uncompressed) {
-						fs.writeFile(name, uncompressed);
+						fs.writeFile(saveDirectory + name, uncompressed);
 					});
 				} else {
-					fs.writeFile(name, body);
+					fs.writeFile(saveDirectory + name, body);
 				}
 			}
 			request(torrentOptions, torrentDownloadCallback);
