@@ -8,8 +8,11 @@ var tough = require('tough-cookie');
 var FileCookieStore = require('tough-cookie-filestore');
 var j = request.jar(new FileCookieStore('cookies.json'));
 request = request.defaults({ jar : j });
-var apikey = process.env.TOKEN;
-var saveDirectory = './';
+
+// set by user in ./configure
+var apikey = !APIKEY!;
+var saveDirectory = '!DIRECTORY!';
+
 console.log("using token: " + apikey);
 var url = 'https://api.pushbullet.com/v2/pushes?modified_after=';
 var timeStamp = 0;
@@ -29,6 +32,7 @@ function requestCallback(error, response, body) {
 			console.log("Download: " + element.url);
 			var torrentOptions = {
 				url: element.url,
+				// prevents troubles
 				encoding: null
 			};
 			// downloads and decompresses if needed
