@@ -10,9 +10,9 @@ var FileCookieStore = require('tough-cookie-filestore');
 var j = request.jar(new FileCookieStore('cookies.json'));
 request = request.defaults({ jar : j });
 
-// set by user in ./configure
-var apikey = null;
-var saveDirectory = './';
+// set by user in config/default.json
+var apikey = config.get('Authorization Token');
+var saveDirectory = config.get('Directory');
 
 console.log("using token: " + apikey);
 var url = 'https://api.pushbullet.com/v2/pushes?modified_after=';
@@ -70,10 +70,6 @@ var requestOptions = {
 function updateUrl() {
 	requestOptions.url = url + timeStamp;
 }
-
-fs.readFile('./pushTorrent.config', 'utf-8', function (error, data) {
-	console.log(data);
-});
 
 //sets first timestamp
 request(requestOptions, setTimeStamp);
